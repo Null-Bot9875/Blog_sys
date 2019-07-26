@@ -23,7 +23,6 @@ class Link(models.Model):
 
     owner = models.ForeignKey(User, verbose_name="作者", on_delete=models.DO_NOTHING)
     created_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
-
     class Meta:
         verbose_name = verbose_name_plural = "友链"
 #侧边栏模型
@@ -54,6 +53,32 @@ class SideBar(models.Model):
     status = models.PositiveIntegerField(default=STATUS_SHOW, choices=STATUS_ITEMS, verbose_name="状态")
     owner = models.ForeignKey(User, verbose_name="作者", on_delete=models.DO_NOTHING)
     created_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+    @property
+    def content_html(self):
+        from blog.models import Post
+        from Comment.models import Comment
 
+        result =  ''
+        if self.display_type == self.DISPLAY_HTML:
+            result = self.content
+        elif self.display_type == self.DISPLAY_LATEST:
+            context = {
+                'post':Post.latest_posts()
+            }
+            result = render_to_string('',context)
+        elif self.display_type == self.DISPLAY_HOT:
+            context = {
+                'post': Post.hot_posts()
+            }
+            result = render_to_string('',context)
+        elif self.display_type == self.DISPLAY_COMMENT:
+            context = {
+                'comments':Comment.objects.filter(status=Comment.STATUS_NORMAL)
+            }
+            result = render_to_string('',context)
+        return result
+    @classmethod
+    def get_all(cls):
+        return cls.objects.filter(status=cls.STATUS_SHOW)
     class Meta:
         verbose_name = verbose_name_plural = "侧边栏"

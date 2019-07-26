@@ -2,9 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Title</title>
 </head>
 <body>
-$END$
+{% if post %}
+<div>
+    <span>作者{{ post.owner.username }}</span>
+    <span>分类{{ post.category.name }}</span>
+</div>
+    <hr/>
+    <p>
+    {{ post.content }}
+    </p>
+{% endif %}
 </body>
 </html>
