@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+THEME = 'bootstrap'
 
 # Application definition
 
@@ -58,7 +59,7 @@ ROOT_URLCONF = 'Blog_sys.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, '../../templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'themes',THEME,'templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {

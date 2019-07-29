@@ -1,0 +1,38 @@
+{% extends "./base.html" %}
+
+{% block title %}
+    {% if tag %}
+    标签页：{{ tag.name }}
+    {% elif category %}
+    分类页：{{ category.name }}
+    {% endif %}
+    <ul>
+{% endblock %}
+
+{% block main %}
+<div class="list-group">
+    {%  for post in post_list %}
+<a href="{% url 'post-detail' post.id %}" class="list-group-item post">
+      <h1> {{ post.title }}</h1>
+      <h4> 作者:{{ post.owner.username }}</h4>
+      <span class="badge">分类:{{ post.category.name }}</span>
+      <span class="badge">标签:{{ post.tag.name }}</span>
+        {% if post.desc %}
+            <p> {{ post.desc }}</p>
+            {% else %}
+            <p> 暂时没有描述噢~ </p>
+        {% endif %}
+  </a>
+   {% endfor %}
+</div>
+
+    {% if page_obj %}
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+        {% endif %}
+        Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">下一页</a>
+        {% endif %}
+    {% endif %}
+{% endblock %}
