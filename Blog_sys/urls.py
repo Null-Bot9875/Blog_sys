@@ -19,6 +19,7 @@ from .custom_site import custom_site
 from blog.views import (
     IndexView,CategoryView,TagView,
     PostListView,PostDetailView,post_list,post_detail,
+    SearchView,
 )
 from blog.views import post_list,post_detail
 from config.views import links
@@ -27,6 +28,7 @@ urlpatterns = [
     url(r'^category/(?P<category_id>\d+)/$', CategoryView.as_view(),name='category-list'),
     url(r'^tag/(?P<tag_id>\d+)/$', TagView.as_view(),name='tag-list'),
     url(r'^post/(?P<post_id>\d+).html$', PostDetailView.as_view(),name='post-detail'),
+    url(r'^search/$', SearchView.as_view(), name='search'),
     url(r'^links/$', links,name='links'),
     url(r'custom_admin/',custom_site.urls,name='super-admin'),
     url(r'super_admin/', admin.site.urls,name='admin'),

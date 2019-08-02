@@ -47,7 +47,7 @@ class CategoryOwnerFilter(admin.SimpleListFilter):
     def queryset(self, request, queryset):
         Category_id = self.value()
         if Category_id:
-            return queryset.filter(Category_id=self.value())
+            return queryset.filter(category_id=self.value())
         return queryset
 
 
