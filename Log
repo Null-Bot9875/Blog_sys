@@ -1,6 +1,0 @@
-[25/Jul/2019 16:18:16]：在文章中点击分类过滤器抛出“
-    FieldError at /custom_admin/blog/post/
-Cannot resolve keyword 'Category_id' into field. Choices are: category, category_id, comment, content, content_html, created_time, desc, id, is_md, owner, owner_id, status, tag, title
-”错误
-
-[29/Jul/2019 16:37:04]：分类无法显示；侧边栏冗余；主页不显示侧边栏；
