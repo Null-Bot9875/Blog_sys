@@ -1,10 +1,12 @@
 from django.db.models import Q
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
-from django.views.generic import DetailView,ListView
+from django.shortcuts import get_object_or_404,redirect
+from django.views.generic import DetailView,ListView,TemplateView
 from .models import Post,Tag,Category
-from config.models import SideBar
+from Comment.forms import CommentForm
+from Comment.models import Comment
+from config.models import SideBar,Link
 # Create your views here.
 
 class CommonViewMixin:
@@ -47,6 +49,10 @@ class PostListView(CommonViewMixin,ListView):
     context_object_name = 'post_list'
     template_name = 'blog/list.html'
 
+class LinklistView(ListView,CommonViewMixin):
+    queryset = Link.objects.filter(status=Link.STATUS_NORMAL)
+    template_name = 'config/links.html'
+    context_object_name = 'link_list'
 
 class CategoryView(IndexView):
     def get_context_data(self, **kwargs):
@@ -84,9 +90,44 @@ class PostDetailView(CommonViewMixin,DetailView):
     template_name = 'blog/detail.html'
     context_object_name = 'post'
     pk_url_kwarg = 'post_id'
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context.update({
+    #         'comment_form':CommentForm,
+    #         'comment_list':Comment.get_by_target(self.request.path),
+    #     })
+    #     #print("PostDetailView get_context_data",context)
+    #     return context
 
 
-
+class AuthorView(IndexView):
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        author_id = self.kwargs.get('owner_id')
+        return queryset.filter(owner_id=author_id)
+class CommentView(TemplateView):
+    http_method_names = ['post']
+    template_name = 'comment/result.html'
+    def post(self,request,*args,**kwargs):
+        comment_form  = CommentForm(request.POST)
+        target = request.POST.get('target')
+        if comment_form.is_valid():
+            instance = comment_form.save(commit=False)
+            print("CommentView POST ", instance)
+            print("CommentView target ", target)
+            instance.target = target
+            instance.save()
+            succeed = True
+            return redirect(target)
+        else:
+            succeed = False
+        context = {
+            'succeed':succeed,
+            'form':comment_form,
+            'target':target,
+        }
+        print("CommentView Context ", context)
+        return self.render_to_response(context)
 def post_detail(request, post_id):
     try:
         post = Post.objects.get(id=post_id)
