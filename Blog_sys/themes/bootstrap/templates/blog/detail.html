@@ -1,15 +1,27 @@
 {% extends "./base.html" %}
+{% load comment_block  %}
 {% block title %} {{ post.title }} {% endblock %}
 
 {% block main %}
+
     {% if post %}
-    <div>
-        <span>作者{{ post.owner.username }}</span>
-        <span>分类{{ post.category.name }}</span>
-    </div>
-    <hr/>
-    <p>
-        {{ post.content }}
-    </p>
+        <div class="panel panel-primary">
+                  <div class="panel-heading">
+            <h5 class="panel-title">作者:{{ post.owner.username }} 分类:{{ post.category.name }}</h5>
+                  </div>
+        </div>
+        <div class="panel  panel-info">
+          <div class="panel-heading">
+              {% if post.desc %}
+                  <h3 class="panel-title">{{ post.desc }}</h3>
+                  {% else %}
+                  <h3 class="panel-title">暂时没有描述噢~</h3>
+             {% endif %}
+          </div>
+          <div class="panel-body">
+            {{ post.content }}
+          </div>
+        </div>
     {% endif %}
+    {% comment_block request.path %}
 {% endblock %}
