@@ -2,9 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>评论结果页</title>
+
+</head>
 </head>
 <body>
-$END$
+<div>
+    {% if succeed %}
+        评论成功
+        <a href="{{ target }}">返回</a>
+    {% else %}
+        <script>
+        alert("输入不合法")
+        </script>
+        <ul>
+        {% for fiedld,message in form.errors.items %}
+            <li>{{ message }}</li>
+            <li>{{ fiedld }}</li>
+        {% endfor %}
+        </ul>
+        <a href="javascript:window.history.back()">返回</a>
+    {% endif %}
+</div>
 </body>
 </html>
