@@ -111,10 +111,11 @@ class CommentView(TemplateView):
     def post(self,request,*args,**kwargs):
         comment_form  = CommentForm(request.POST)
         target = request.POST.get('target')
+
         if comment_form.is_valid():
             instance = comment_form.save(commit=False)
             print("CommentView POST ", instance)
-            print("CommentView target ", target)
+            print("CommentView target (target path) ", target)
             instance.target = target
             instance.save()
             succeed = True

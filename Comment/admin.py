@@ -3,4 +3,4 @@ from .models import Comment
 # Register your models here.
 @admin.register(Comment)
 class CommentAdmin (admin.ModelAdmin):
-    list_display = ('target','content','nickname','website','email','status','created_time')
+    list_display = ('target','content','nickname','status','created_time')

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>{% block title %} 首页 {% endblock %} - BlogSys  博客系统</title>
@@ -15,6 +16,8 @@
               margin-bottom: 10px;
           }
       </style>
+{% block extra_head %}
+{% endblock %}
 </head>
 <body>
     <div class="container header">
@@ -73,6 +76,12 @@
                     {% endblock %}
                 </div>
                 <div class="col-md-3">
+                    <a href="https://github.com/XD-null" class="list-group-item">
+                      <h1> 关于我</h1>
+                      <h4>网名: Null</h4>
+                      <span class="badge">站长</span>
+                      <p>干啥啥不会，要啥啥没有，做啥啥不行。</p>
+                    </a>
                     {% block sidebar %}
                         {% for sidebar in sidebars %}
                     <a href="#" class="list-group-item sidebar">
@@ -97,7 +106,7 @@
                   <p class="navbar-text navbar-left">👉 <a href="{% url 'category-list' cate.id %}" class="navbar-link">{{ cate.name }}</a></p>
                   {% endif %}
               {% endfor %}
-              <p class="navbar-text navbar-right"><a href="#" class="navbar-link">Power by Null</a>👈 </p>
+              <p class="navbar-text navbar-right"><a href="https://github.com/XD-null" class="navbar-link">Power by Null</a>👈 </p>
           </div>
         </nav>
 

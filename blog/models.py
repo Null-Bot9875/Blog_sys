@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
+import mistune
 class Category(models.Model):
     STATUS_NORMAL = 1
     STATUS_DELETE = 0
@@ -83,6 +84,10 @@ class Post(models.Model):
     class Meta:
         verbose_name = verbose_name_plural = "文章"
         ordering = ['-id']
+    def save(self,*args,**kwargs):
+        self.content_html = mistune.markdown(self.content)
+        #print(self.content_html)
+        super().save(*args,**kwargs)
     @staticmethod
     def get_by_tag(tag_id):
         try:
