@@ -1,8 +1,19 @@
-<ul>
+<!--
+    {% for comment in comments %}
+        {% autoescape off %}
+    <a href="{{ comment.target }}" class="list-group-item sidebar">
+        <h8>To {{ comment.target.title}}</h8>
+        <h9>{{ comment.nickname }} : {{ comment.content }}</h9>
+      <span class="badge">评论</span>
+    </a>
+        {% endautoescape %}
+    {% endfor %}-->
+
+
    {% for comment in comments %}
-        <li><a href="/post/{{ comment.target }}.html">{{ comment.target.title}}</a>
-            {% autoescape off %}
-        {{ comment.nickname }} : {{ comment.content }}
-            {% endautoescape %}</li>
+       {% autoescape off %}
+       {% if comment %}
+           <li><a href="{{ comment.target }}">{{ comment.nickname }} :  {{ comment.content }}</a></li>
+       {% endif %}
+       {% endautoescape %}
    {% endfor %}
-</ul>

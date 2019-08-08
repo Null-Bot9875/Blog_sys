@@ -60,15 +60,19 @@ class SideBar(models.Model):
 
         result = ''
         if self.display_type == self.DISPLAY_HTML:
-            result = self.content
+            context = {
+                'posts':self.content
+            }
+            print("self.display_type == self.DISPLAY_HTML: ",context)
+            result = render_to_string('config/blocks/sidebar_html.html',context)
         elif self.display_type == self.DISPLAY_LATEST:
             context = {
-                'post':Post.latest_posts()
+                'posts':Post.latest_posts()
             }
             result = render_to_string('config/blocks/sidebar_posts.html',context)
         elif self.display_type == self.DISPLAY_HOT:
             context = {
-                'post': Post.hot_posts()
+                'posts': Post.hot_posts()
             }
             result = render_to_string('config/blocks/sidebar_posts.html',context)
         elif self.display_type == self.DISPLAY_COMMENT:

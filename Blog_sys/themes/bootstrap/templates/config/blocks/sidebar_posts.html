@@ -1,5 +1,15 @@
-<ul>
+
+<!--
     {% for post in posts %}
-        <li><a href="/post/{{ post.id }}.html">{{ post.title}}</a></li>
+    <a href="/post/{{ post.id }}.html" class="list-group-item sidebar">
+      <h4>{{ post.title}}</h4>
+      <span class="badge">文章</span>
+    </a>
+    {% endfor %} -->
+
+
+    {% for post in posts %}
+        {% if post %}
+            <li><a href="/post/{{ post.id }}.html">{{ post.title}}</a></li>
+        {% endif %}
     {% endfor %}
-</ul>

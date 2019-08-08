@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-# Create your models here.
 import mistune
+# Create your models here.
+
 class Category(models.Model):
     STATUS_NORMAL = 1
     STATUS_DELETE = 0
@@ -114,6 +115,7 @@ class Post(models.Model):
     @classmethod
     def latest_posts(cls):
         queryset = cls.objects.filter(status=cls.STATUS_NORMAL)
+        #print("latest_posts",queryset)
         return queryset
     @classmethod
     def hot_posts(cls):

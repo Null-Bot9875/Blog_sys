@@ -93,13 +93,24 @@
                     </a>
                     </div>
                     {% block sidebar %}
-                        {% for sidebar in sidebars %}
-                    <a href="#" class="list-group-item sidebar">
-                          <h4>{{ sidebar.title }} {{ sidebar.content_html }}</h4>
-                          <span class="badge">侧边栏</span>
-                    </a>
+                        <div class="form-group row">
+                            {% for sidebar in sidebars %}
+
+                             <div class="col-md-5">
+                             <div class="dropdown">
+                              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                {{ sidebar.title }} 👇
+                                <span class="caret"></span>
+                              </button>
+                              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                  {{ sidebar.content_html }}
+                              </ul>
+                             </div>
+                             </div>
                         {% endfor %}
+                        </div>
                     {% endblock %}
+
                 </div>
                 </div>
             </div>
