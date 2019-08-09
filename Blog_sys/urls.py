@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import url
 from .custom_site import custom_site
+import xadmin
 from blog.views import (
     IndexView,CategoryView,TagView,
     PostListView,PostDetailView,post_list,post_detail,
@@ -32,8 +33,8 @@ urlpatterns = [
     url(r'^author/(?P<owner_id>\d+)$', AuthorView.as_view(), name='author'),
     url(r'^comment/$',CommentView.as_view(),name='comment'),
     url(r'^links/$', LinklistView.as_view(),name='links'),
-    url(r'custom_admin/',custom_site.urls,name='super-admin'),
-    url(r'super_admin/', admin.site.urls,name='admin'),
+    url(r'admin/',xadmin.site.urls,name='xadmin'),
+    #url(r'super_admin/', admin.site.urls,name='admin'),
     # url(r'^$',post_list),
     # url(r'^category/(?P<category_id>\d+)/$',post_list),
     # url(r'^tag/(?P<tag_id>\d+)/$',post_list),

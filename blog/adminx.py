@@ -5,6 +5,10 @@ from .models import Post,Category,Tag
 from .adminforms import PostAdminForm
 from Blog_sys.base_admin import BaseOwnerAdmin
 from Blog_sys.custom_site import custom_site
+from xadmin.layout import Row,Fieldset
+from xadmin.filters import manager
+from xadmin.filters import RelatedFieldListFilter
+import xadmin
 # Register your models here.
 
 
@@ -15,7 +19,7 @@ class PostInline(admin.TabularInline):
     model = Post
 
 
-@admin.register(Category, site=custom_site)
+@xadmin.sites.register(Category)
 class CategoryAdmin (BaseOwnerAdmin):
     list_display = ('name','status','is_nav','created_time','owner','post_count')
     fields = ('name','status','is_nav')
@@ -27,7 +31,7 @@ class CategoryAdmin (BaseOwnerAdmin):
     post_count.short_description = "文章数量"
 
 
-@admin.register(Tag,site=custom_site)
+@xadmin.sites.register(Tag)
 class TagAdmin (BaseOwnerAdmin):
     list_display = ('name','status','created_time','owner')
     fields = ('name','status')
@@ -37,21 +41,18 @@ class TagAdmin (BaseOwnerAdmin):
 
 
 """ 自定义过滤器只展示当前用户分类 """
-class CategoryOwnerFilter(admin.SimpleListFilter):
-    title = "分类过滤器"
-    parameter_name = 'owner_category'
-
-    def lookups(self, request, model_admin):
-        return Category.objects.filter(owner=request.user).values_list('id','name')
-
-    def queryset(self, request, queryset):
-        Category_id = self.value()
-        if Category_id:
-            return queryset.filter(category_id=self.value())
-        return queryset
+class CategoryOwnerFilter(RelatedFieldListFilter):
 
 
-@admin.register(Post,site=custom_site)
+    @classmethod
+    def test(cls, field, request, params, model, admin_view, field_path):
+        return field.name == 'category'
+    def __init__(self, field, request, params, model, model_admin, field_path):
+        super().__init__(field, request, params, model, model_admin, field_path)
+        self.lookup_choices = Category.objects.filter(owner=request.user).values_list('id','name')
+manager.register(CategoryOwnerFilter,take_priority=True)
+
+@xadmin.sites.register(Post)
 class PostAdmin (BaseOwnerAdmin):
     form = PostAdminForm
     list_display = ('title','category','status','created_time','owner','operator')#'operator'
@@ -62,35 +63,23 @@ class PostAdmin (BaseOwnerAdmin):
     actions_on_bottom = False
     save_on_top = True
     exclude = ('owner',)
-    fieldsets = (
-        ('基础信息',{
-            'description':'基础配置描述',
-            'fields':(
-                ('title','category'),
-                'status',
-            ),
-        }),
-        ('内容',{
-            'fields':(
-                'desc',
-                'content'
-            )
-        }),
-        ('额外信息',{
-            'classes':('collapse',),
-            'fields':('tag',),
-        })
+    form_layout = (
+        Fieldset(
+            '基础信息',
+            Row("title", "category"),
+            'status',
+            'tag',
+        ),
+        Fieldset(
+            '内容信息',
+            'desc',
+            'content',
+        )
     )
-    # fields = (
-    #     ('category','title'),
-    #     'desc',
-    #     'content',
-    #     'status',
-    #     'tag',
-    # )
+    list_filter = ['category']
     def operator(self,obj):
         return format_html(
             '<a href="{}">编辑</a>',
-            reverse('custom_site:blog_post_change', args=(obj.id,))
+            reverse('xadmin:blog_post_change', args=(obj.id,))
         )
     operator.short_description = '操作'

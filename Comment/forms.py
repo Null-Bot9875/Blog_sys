@@ -5,7 +5,7 @@ from .models import Comment
 class CommentForm(forms. ModelForm):
     nickname = forms.CharField(
         label='昵称',
-        max_length=50,
+        max_length=10,
         widget=forms.widgets.Input(
             attrs={'rows':6,'cols':60,'class':'form-control','placeholder':"昵称",'aria-describedby':"basic-addon1"},
         )
@@ -26,7 +26,7 @@ class CommentForm(forms. ModelForm):
     # )
     content = forms.CharField(
         label='内容',
-        max_length=500,
+        max_length=200,
         widget=forms.widgets.Textarea(
             attrs={'rows':6,'cols':60,'class':'form-control','placeholder':"评论内容",'aria-describedby':"basic-addon1"},
         )
