@@ -9,7 +9,7 @@ from PIL import Image,ImageDraw,ImageFont
 class WatermarkStorage(FileSystemStorage):
     def save(self, name, content, max_length=None):
         if 'image' in content.content_type:
-            image = self.watermark_with_text(content,'这是一个水印','red')
+            image = self.watermark_with_text(content,'Null','white')
             content = self.convert_image_to_file(image,name)
 
         return super().save(name,content,max_length=max_length)
