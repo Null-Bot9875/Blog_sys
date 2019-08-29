@@ -42,8 +42,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'dal',
+    'dal_select2',
     'xadmin',
     'crispy_forms',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
@@ -107,7 +111,26 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+CKEDITOR_CONFIGS = {
+    'default': {
+    'toolbar':'full',
+    'height':800,
+    'width':1350,
+    'tabSpaces':4,
+    'extraPlugins':'codesnippet'
+    },
+}
+# CKEDITOR_CONFIGS = {
+#     'default': {
+#         'toolbar': 'Custom',
+#         'toolbar_Custom': [
+#             ['Bold', 'Italic', 'Underline'],
+#             ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+#             ['Link', 'Unlink'],
+#             ['RemoveFormat', 'Source']
+#         ]
+#     }
+# }
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -130,3 +153,9 @@ STATIC_URL = '/static/'
 XADMIN_TITLE = '是权限狗页面^^'
 
 XADMIN_FOOTER_TITLE = 'power by Null'
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR,"media")
+CKEDITOR_UPLOAD_PATH = 'article_images'
+
+DEFAULT_FILE_STORAGE = 'Blog_sys.storage.WatermarkStorage'
