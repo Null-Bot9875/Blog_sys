@@ -86,7 +86,10 @@ class Post(models.Model):
         verbose_name = verbose_name_plural = "文章"
         ordering = ['-id']
     def save(self,*args,**kwargs):
-        self.content_html = mistune.markdown(self.content)
+        if self.is_md:
+            self.content_html = mistune.markdown(self.content)
+        else:
+            self.content_html = self.content
         #print(self.content_html)
         super().save(*args,**kwargs)
     @staticmethod

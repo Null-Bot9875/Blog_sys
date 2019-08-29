@@ -14,9 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.conf.urls import url
+from django.conf import settings
+from django.conf.urls import url,include
+from django.conf.urls.static import static
 from .custom_site import custom_site
 import xadmin
+from .autocomplete import CategoeyAutocomplete,TagAutocomplete
 from blog.views import (
     IndexView,CategoryView,TagView,
     PostListView,PostDetailView,post_list,post_detail,
@@ -34,6 +37,9 @@ urlpatterns = [
     url(r'^comment/$',CommentView.as_view(),name='comment'),
     url(r'^links/$', LinklistView.as_view(),name='links'),
     url(r'admin/',xadmin.site.urls,name='xadmin'),
+    url(r'^category-autocomplete/$',CategoeyAutocomplete.as_view(),name='category-autocomplete'),
+    url(r'^tag-autocomplete/$',TagAutocomplete.as_view(),name='tag-autocomplete'),
+    url(r'^ckeditor/',include('ckeditor_uploader.urls')),
     #url(r'super_admin/', admin.site.urls,name='admin'),
     # url(r'^$',post_list),
     # url(r'^category/(?P<category_id>\d+)/$',post_list),
@@ -42,4 +48,4 @@ urlpatterns = [
     # url(r'^links/$', links),
     # url(r'custom_admin/', custom_site.urls, name='super-admin'),
     # url(r'super_admin/', admin.site.urls, name='admin'),
-]
+] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
