@@ -14,8 +14,10 @@
         width: 140px;
     }
     </style>
+    <script src="/static/js/zoom.js" async></script>
 {% endblock %}
 {% block main %}
+
     {% if post %}
         <div class="panel panel-primary">
                   <div class="panel-heading">
@@ -36,7 +38,8 @@
               {% endautoescape %}
           </div>
         </div>
-        <script src="/static/js/zoom.js"></script>
+
     {% endif %}
     {% comment_block request.path %}
+
 {% endblock %}
