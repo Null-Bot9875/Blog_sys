@@ -56,4 +56,4 @@ class PostAdminForm(forms.ModelForm):
         self.cleaned_data['content'] = content
         return super().clean()
     class Media:
-        js = ('js/post_editor.js')
+        js = ('js/switch.js', )
