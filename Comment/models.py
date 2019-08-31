@@ -19,7 +19,7 @@ class Comment (models.Model):
     created_time = models.DateTimeField(auto_now_add=True,verbose_name="发布时间")
     @classmethod
     def get_by_target(cls,target):
-        return cls.objects.filter(target=target,status=cls.STATUS_NORMAL)
+        return cls.objects.filter(target=target,status=cls.STATUS_DELETE)
 
     class Meta:
         verbose_name = verbose_name_plural = "评论"
