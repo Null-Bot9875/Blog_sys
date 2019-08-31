@@ -45,7 +45,7 @@ class SearchView (IndexView):
 
 class PostListView(CommonViewMixin,ListView):
     queryset = Post.latest_posts()
-    paginate_by = 3 # 每页的文章数量
+    paginate_by = 5 # 每页的文章数量
     context_object_name = 'post_list'
     template_name = 'blog/list.html'
 
@@ -85,20 +85,21 @@ class TagView(IndexView):
         tag_id = self.kwargs.get('tag_id')
         return queryset.filter(tag__id=tag_id)
 
+#文章的评论信息
 class PostDetailView(CommonViewMixin,DetailView):
     queryset = Post.latest_posts()
     template_name = 'blog/detail.html'
     context_object_name = 'post'
     pk_url_kwarg = 'post_id'
+    #在Comment/templategs/comment_block.py 中实现
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)
     #     context.update({
     #         'comment_form':CommentForm,
     #         'comment_list':Comment.get_by_target(self.request.path),
     #     })
-    #     #print("PostDetailView get_context_data",context)
+    #     print("PostDetailView get_context_data",context)
     #     return context
-
 
 class AuthorView(IndexView):
     def get_queryset(self):
@@ -111,14 +112,20 @@ class CommentView(TemplateView):
     def post(self,request,*args,**kwargs):
         comment_form  = CommentForm(request.POST)
         target = request.POST.get('target')
-
         if comment_form.is_valid():
             instance = comment_form.save(commit=False)
+            print("CommentView comment_form ", comment_form )
             print("CommentView POST ", instance)
             print("CommentView target (target path) ", target)
             instance.target = target
             instance.save()
             succeed = True
+            context = {
+                'succeed': succeed,
+                'form': comment_form,
+                'target': target,
+            }
+            #return self.render_to_response(context)
             return redirect(target)
         else:
             succeed = False
@@ -127,7 +134,7 @@ class CommentView(TemplateView):
             'form':comment_form,
             'target':target,
         }
-        print("CommentView Context ", context)
+        print("CommentView is'nt valid ", context)
         return self.render_to_response(context)
 def post_detail(request, post_id):
     try:
