@@ -1,4 +1,5 @@
-from django.db.models import Q
+from datetime import date
+from django.db.models import Q,F
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404,redirect
@@ -7,6 +8,7 @@ from .models import Post,Tag,Category
 from Comment.forms import CommentForm
 from Comment.models import Comment
 from config.models import SideBar,Link
+from django.core.cache import cache
 # Create your views here.
 
 class CommonViewMixin:
@@ -91,6 +93,33 @@ class PostDetailView(CommonViewMixin,DetailView):
     template_name = 'blog/detail.html'
     context_object_name = 'post'
     pk_url_kwarg = 'post_id'
+    def get(self, request, *args, **kwargs):
+        response = super().get(request,*args,**kwargs)
+        self.handle_visted()
+        # from django.db import connection
+        # print(connection.queries)
+        return response
+    def handle_visted(self):
+        increase_uv = False
+        increase_pv = False
+        uid = self.request.uid
+        pv_key = 'pv:%s:%s' % (uid,self.request.path)
+        uv_key = 'uv:%s:%s:%s' % (uid,str(date.today()),self.request.path)
+        if not cache.get(pv_key):
+            increase_pv = True
+            cache.set(pv_key,1,60*60)# 一分钟内有效
+        if not cache.get(uv_key):
+            increase_uv = True
+            cache.set(uv_key,1,24*60*60)
+        if increase_pv and increase_uv:
+            Post.objects.filter(pk=self.object.id).update(pv=F('pv')+1,uv=F('uv')+1)
+        elif increase_pv:
+            Post.objects.filter(pk=self.object.id).update(pv=F('pv') + 1)
+        elif increase_uv:
+            Post.objects.filter(pk=self.object.id).update(uv=F('uv') + 1)
+        print(" pk=self.object.id :" + str(self.object.id))
+        print(" pv_key :" +pv_key)
+        print(" uv_key :" +uv_key)
     #在Comment/templategs/comment_block.py 中实现
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)
