@@ -55,7 +55,7 @@ manager.register(CategoryOwnerFilter,take_priority=True)
 @xadmin.sites.register(Post)
 class PostAdmin (BaseOwnerAdmin):
     form = PostAdminForm
-    list_display = ('title','category','status','created_time','owner','operator')#'operator'
+    list_display = ('title','category','status','created_time','owner','operator','pv','uv')#'operator'
     list_display_links = []
     list_filter = [CategoryOwnerFilter, ]
     search_fields = ['title','category__name'] #可以根据标题和分类来搜索
