@@ -117,9 +117,9 @@ class PostDetailView(CommonViewMixin,DetailView):
             Post.objects.filter(pk=self.object.id).update(pv=F('pv') + 1)
         elif increase_uv:
             Post.objects.filter(pk=self.object.id).update(uv=F('uv') + 1)
-        print(" pk=self.object.id :" + str(self.object.id))
-        print(" pv_key :" +pv_key)
-        print(" uv_key :" +uv_key)
+        # print(" pk=self.object.id :" + str(self.object.id))
+        # print(" pv_key :" +pv_key)
+        # print(" uv_key :" +uv_key)
     #在Comment/templategs/comment_block.py 中实现
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)
