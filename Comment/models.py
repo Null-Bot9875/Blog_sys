@@ -11,6 +11,7 @@ class Comment (models.Model):
         (STATUS_DELETE, '删除'),
     )
     target = models.CharField(max_length=100,verbose_name="评论目标")
+    #target_1 = models.ForeignKey(Post,on_delete=)
     content = models.CharField(max_length=200,verbose_name="评论内容")
     nickname = models.CharField(max_length=50,verbose_name="名称")
     #website = models.URLField(verbose_name="网站")
