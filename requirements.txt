@@ -18,7 +18,7 @@ odfpy==1.4.0
 openpyxl==2.6.2
 PyMySQL==0.9.3
 pytz==2019.1
-PyYAML==5.1.2
+PyYAML==5.4
 raven==6.10.0
 six==1.12.0
 sqlparse==0.3.0
@@ -50,7 +50,7 @@ openpyxl==2.6.2
 Pillow==5.1.0
 PyMySQL==0.9.3
 pytz==2019.1
-PyYAML==5.1.2
+PyYAML==5.4
 raven==6.10.0
 six==1.12.0
 sqlparse==0.3.0
